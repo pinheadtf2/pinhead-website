@@ -1,0 +1,21 @@
+---
+import {execSync} from 'child_process';
+
+const currentYear: number = new Date().getFullYear();
+
+function getCurrentCommitHash() {
+    try {
+        return execSync('git rev-parse --short HEAD').toString().trim();
+    } catch (error) {
+        console.error('Error getting commit hash:', error);
+        return "Commit Unavailable"; // Handle cases where git is not installed or repo is not found
+    }
+}
+
+const commitId = getCurrentCommitHash();
+---
+<footer>
+    <span> © pinhead 2023-{currentYear}</span> &middot;
+    <a href="https://github.com/pinheadtf2/pinhead-website/tree/version-4">v4.0.0-alpha</a> &middot;
+    <a href="">{commitId}</a>
+</footer>

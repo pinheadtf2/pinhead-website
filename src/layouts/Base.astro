@@ -1,0 +1,30 @@
+---
+import '@fontsource-variable/lexend';
+import "../styles/global.css";
+
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = "pinhead.dev";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{pageTitle}</title>
+        <meta content="pinhead's website" property="og:title"/>
+        <meta content="pinhead's personal site - v4 branch (preview)" property="og:description"/>
+        <meta content="https://v4.pinhead.dev" property="og:url"/>
+        <meta content="https://v4.pinhead.dev/mizu-conie.png" property="og:image"/>
+        <meta content="#2196f3" data-react-helmet="true" name="theme-color"/>
+	</head>
+	<body>
+        <Navigation />
+		<slot />
+		<Footer />
+	</body>
+</html>
