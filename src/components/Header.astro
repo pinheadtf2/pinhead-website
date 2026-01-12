@@ -1,0 +1,244 @@
+---
+const navItems = [
+    {
+        title: 'home',
+        href: '/'
+    },
+    {
+        title: 'about',
+        href: '/about',
+        dropdown: [
+            {title: 'entry', href: '#'},
+            {title: 'entry', href: '#'},
+        ]
+    },
+    {
+        title: 'contact',
+        href: '/contact'
+    }
+];
+---
+<!--
+To the poor soul inspecting this file expecting good code: turn back.
+This is an amalgamation of inspiration from multiple sources, ai-assisted code, and keyboard-forehead smashing.
+
+-->
+<header id="main-header" class="bg-gray-100 shadow-md sticky top-0 z-20">
+    <div class="max-w-[92rem] mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-6">
+                {navItems.map((item) => (
+                        <div class="relative group">
+                            <a
+                                    href={item.href}
+                                    class="text-gray-900 hover:text-gray-600 transition-colors py-2 flex items-center gap-1"
+                            >
+                                {item.title}
+                                {item.dropdown && (
+                                        <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none"
+                                             stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                )}
+                            </a>
+
+                            {item.dropdown && (
+                                    <div class="absolute left-0 top-full w-48 bg-white shadow-lg rounded-md overflow-hidden transition-all duration-300 ease-out origin-top scale-y-0 opacity-0 group-hover:scale-y-100 group-hover:opacity-100">
+                                        <div class="py-2">
+                                            {item.dropdown.map((subItem) => (
+                                                    <a
+                                                            href={subItem.href}
+                                                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                                                    >
+                                                        {subItem.title}
+                                                    </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                            )}
+                        </div>
+                ))}
+            </nav>
+
+            <!--
+            Logo
+            Displays on the right side of the screen for Desktop users, left side for mobile users
+            -->
+            <a href="/" class="text-2xl font-bold text-gray-900">
+                pinhead's site
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button
+                    id="mobile-menu-btn"
+                    class="md:hidden p-2 text-gray-900 hover:bg-gray-200 rounded-md transition-colors"
+                    aria-label="Toggle menu"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav
+                id="mobile-menu"
+                class="md:hidden overflow-hidden transition-all duration-300 ease-out"
+                style="max-height: 0;"
+        >
+            {navItems.map((item) => (
+                    <div class="border-t border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <a
+                                    href={item.href}
+                                    class="flex-1 py-3 text-gray-900 hover:bg-gray-200 transition-colors"
+                            >
+                                {item.title}
+                            </a>
+                            {item.dropdown && (
+                                    <button
+                                            class="mobile-dropdown-btn p-3 text-gray-900 hover:bg-gray-200 transition-colors"
+                                            aria-label={`Toggle ${item.title} dropdown`}
+                                    >
+                                        <svg class="w-5 h-5 transition-transform duration-300" fill="none"
+                                             stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                            )}
+                        </div>
+
+                        {item.dropdown && (
+                                <div class="mobile-dropdown bg-gray-50 pl-4 overflow-hidden transition-all duration-300 ease-out"
+                                     style="max-height: 0;">
+                                    {item.dropdown.map((subItem) => (
+                                            <a
+                                                    href={subItem.href}
+                                                    class="block py-2 text-gray-700 hover:text-gray-900 transition-colors"
+                                            >
+                                                {subItem.title}
+                                            </a>
+                                    ))}
+                                </div>
+                        )}
+                    </div>
+            ))}
+        </nav>
+    </div>
+</header>
+
+<!--
+This is the main stuff that was ai-generated, overly code-commented for somewhat easier understanding.
+-->
+<script>
+    // Animation state tracking
+    let isAnimating = false;
+    const ANIMATION_DURATION = 300; // Match CSS transition duration
+
+    // Mobile menu toggles
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mainHeader = document.getElementById('main-header');
+
+    // Set the max height so the dropdown shows
+    function openMobileMenu() {
+        if (mobileMenu) {
+            mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+        }
+    }
+
+    // Hide the dropdown and all sub-dropdowns by setting no max height
+    function closeMobileMenu() {
+        if (mobileMenu) {
+            mobileMenu.style.maxHeight = '0';
+            // Also close all dropdowns
+            const dropdowns = document.querySelectorAll('.mobile-dropdown');
+            dropdowns.forEach(dropdown => {
+                (dropdown as HTMLElement).style.maxHeight = '0';
+            });
+            const icons = document.querySelectorAll('.mobile-dropdown-btn svg');
+            icons.forEach(icon => {
+                icon.classList.remove('rotate-180');
+            });
+        }
+    }
+
+    // Handles starting animations, ignores any active ones to prevent bugs
+    mobileMenuBtn?.addEventListener('click', () => {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        if (mobileMenu?.style.maxHeight === '0px' || mobileMenu?.style.maxHeight === '') {
+            openMobileMenu();
+        } else {
+            closeMobileMenu();
+        }
+
+        setTimeout(() => {
+            isAnimating = false;
+        }, ANIMATION_DURATION);
+    });
+
+    // Get all mobile dropdown toggles
+    const dropdownBtns = document.querySelectorAll('.mobile-dropdown-btn');
+
+    // Add an event listener to every dropdown button, which allows them to expand/contract
+    dropdownBtns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            if (isAnimating) return;
+
+            e.preventDefault();
+            e.stopPropagation(); // Prevent triggering outside click
+
+            isAnimating = true;
+
+            // Get the actual dropdown for its content, and the dropdown caret for rotating
+            const dropdown = btn.parentElement?.nextElementSibling as HTMLElement;
+            const icon = btn.querySelector('svg');
+
+            // if the dropdown actually exists, set its maxHeight so it can be seen
+            if (dropdown) {
+                if (dropdown.style.maxHeight === '0px' || dropdown.style.maxHeight === '') {
+                    dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
+                    icon?.classList.add('rotate-180');
+                } else {  // handle dropdowns that already have maxHeight
+                    dropdown.style.maxHeight = '0';
+                    icon?.classList.remove('rotate-180');
+                }
+
+                // Set the maxHeight to how large the scroll height is
+                // Use multiple timeouts to ensure smooth-ish expansion
+                // This is extremely scuffed but frankly trying to make navbars sucks
+                // the woes of hating js, loving python, and not truly understanding CSS
+                if (mobileMenu) {
+                    setTimeout(() => {
+                        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                    }, 50);
+                    setTimeout(() => {
+                        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                    }, 150);
+                    setTimeout(() => {
+                        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                    }, 310); // After dropdown animation completes
+                }
+            }
+
+            // Animation is no longer running, so reset the flag
+            setTimeout(() => {
+                isAnimating = false;
+            }, ANIMATION_DURATION);
+        });
+    });
+
+    // Auto-close mobile menu when clicking on anything that isn't the dropdown
+    document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (mainHeader && !mainHeader.contains(target)) {
+            closeMobileMenu();
+        }
+    });
+</script>
