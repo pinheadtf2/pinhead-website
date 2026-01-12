@@ -8,7 +8,7 @@ const navItems = [
         title: 'about',
         href: '/about',
         dropdown: [
-            {title: 'entry', href: '#'},
+            {title: 'contact', href: '/contact'},
             {title: 'entry', href: '#'},
         ]
     },
@@ -17,11 +17,22 @@ const navItems = [
         href: '/contact'
     }
 ];
+
+// Get current path for active state detection
+const currentPath = Astro.url.pathname;
+console.log(currentPath);
+
+// Helper function to check if a link is active
+function isActive(href: string) {
+    if (href === '/') {
+        return currentPath === '/';
+    }
+    return currentPath.startsWith(href);
+}
 ---
 <!--
 To the poor soul inspecting this file expecting good code: turn back.
 This is an amalgamation of inspiration from multiple sources, ai-assisted code, and keyboard-forehead smashing.
-
 -->
 <header id="main-header" class="bg-gray-100 shadow-md sticky top-0 z-20">
     <div class="max-w-[92rem] mx-auto px-4">
@@ -33,7 +44,11 @@ This is an amalgamation of inspiration from multiple sources, ai-assisted code, 
                         <div class="relative group">
                             <a
                                     href={item.href}
-                                    class="text-gray-900 hover:text-gray-600 transition-colors py-2 flex items-center gap-1"
+                                    class={`transition-colors py-2 flex items-center gap-1 ${
+                                        isActive(item.href)
+                                            ? 'text-blue-600 font-bold'
+                                            : 'text-gray-900 hover:text-gray-600'
+                                    }`}
                             >
                                 {item.title}
                                 {item.dropdown && (
@@ -94,7 +109,11 @@ This is an amalgamation of inspiration from multiple sources, ai-assisted code, 
                         <div class="flex items-center justify-between">
                             <a
                                     href={item.href}
-                                    class="flex-1 py-3 text-gray-900 hover:bg-gray-200 transition-colors"
+                                    class={`flex-1 py-3 transition-colors ${
+                                        isActive(item.href)
+                                            ? 'text-blue-600 font-bold'
+                                            : 'text-gray-900 hover:bg-gray-200'
+                                    }`}
                             >
                                 {item.title}
                             </a>
@@ -118,7 +137,11 @@ This is an amalgamation of inspiration from multiple sources, ai-assisted code, 
                                     {item.dropdown.map((subItem) => (
                                             <a
                                                     href={subItem.href}
-                                                    class="block py-2 text-gray-700 hover:text-gray-900 transition-colors"
+                                                    class={`block py-2 hover:text-gray-900 transition-colors ${
+                                                        isActive(subItem.href)
+                                                            ? 'text-blue-600 font-bold'
+                                                            : 'text-gray-700 hover:bg-gray-200'
+                                                    }`}
                                             >
                                                 {subItem.title}
                                             </a>
