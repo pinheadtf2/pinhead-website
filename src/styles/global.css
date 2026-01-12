@@ -1,5 +1,30 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Inter', 'sans-serif';
+    --font-sans: 'Lexend Variable', 'sans-serif';
+}
+
+@layer base {
+    h1 {
+        font-size: var(--text-4xl);
+    }
+
+    h2 {
+        font-size: var(--text-3xl);
+    }
+
+    h3 {
+        font-size: var(--text-2xl);
+    }
+
+    h4 {
+        font-size: var(--text-xl);
+    }
+
+    main, footer {
+        a {
+            color: var(--color-blue-600);
+            text-decoration-line: underline;
+        }
+    }
 }
