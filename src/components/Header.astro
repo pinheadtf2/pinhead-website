@@ -8,8 +8,20 @@ const navItems = [
         title: 'about',
         href: '/about',
         dropdown: [
-            {title: 'contact', href: '/contact'},
-            {title: 'entry', href: '#'},
+            {
+                title: 'music',
+                href: '/about/music'
+            },
+            {
+                title: 'gaming',
+                href: '/about/gaming',
+                dropdown: [
+                    {
+                        title: 'flood escape 2',
+                        href: '/about/gaming/fe2'
+                    },
+                ]
+            },
         ]
     },
     {
@@ -29,6 +41,11 @@ function isActive(href: string) {
     }
     return currentPath.startsWith(href);
 }
+
+// Recursive component for rendering nav items
+function renderNavItem(item: any, depth: number = 0) {
+    return item;
+}
 ---
 <!--
 To the poor soul inspecting this file expecting good code: turn back.
@@ -42,6 +59,7 @@ This is an amalgamation of inspiration from multiple sources, ai-assisted code, 
             <nav class="hidden md:flex items-center gap-6">
                 {navItems.map((item) => (
                         <div class="relative group">
+                            <!-- Top-level link -->
                             <a
                                     href={item.href}
                                     class={`transition-colors py-2 flex items-center gap-1 ${
@@ -52,26 +70,66 @@ This is an amalgamation of inspiration from multiple sources, ai-assisted code, 
                             >
                                 {item.title}
                                 {item.dropdown && (
-                                        <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none"
-                                             stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg
+                                                class="w-4 h-4 transition-transform group-hover:rotate-180"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                        >
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                   d="M19 9l-7 7-7-7"/>
                                         </svg>
                                 )}
                             </a>
 
+                            <!-- First dropdown -->
                             {item.dropdown && (
-                                    <div class="absolute left-0 top-full w-48 bg-white shadow-lg rounded-md overflow-hidden transition-all duration-300 ease-out origin-top scale-y-0 opacity-0 group-hover:scale-y-100 group-hover:opacity-100">
-                                        <div class="py-2">
-                                            {item.dropdown.map((subItem) => (
+                                    <div class="absolute left-0 top-full z-30 w-48 bg-white shadow-lg rounded-md opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200">
+                                        {item.dropdown.map((subItem) => (
+                                                <div class="relative group/submenu">
+                                                    <!-- Sub item -->
                                                     <a
                                                             href={subItem.href}
-                                                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                                                            class={`flex items-center justify-between px-4 py-2 whitespace-nowrap transition-colors ${
+                                                                isActive(subItem.href)
+                                                                    ? 'text-blue-600 font-bold'
+                                                                    : 'text-gray-700 hover:bg-gray-100'
+                                                            }`}
                                                     >
                                                         {subItem.title}
+                                                        {subItem.dropdown && (
+                                                                <svg
+                                                                        class="w-4 h-4 transition-transform group-hover/submenu:rotate-90"
+                                                                        fill="none"
+                                                                        stroke="currentColor"
+                                                                        viewBox="0 0 24 24"
+                                                                >
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                          stroke-width="2"
+                                                                          d="M9 5l7 7-7 7"/>
+                                                                </svg>
+                                                        )}
                                                     </a>
-                                            ))}
-                                        </div>
+
+                                                    <!-- Second-level dropdown -->
+                                                    {subItem.dropdown && (
+                                                            <div class="absolute left-full top-0 z-40 w-48 bg-white shadow-lg rounded-md opacity-0 invisible -translate-x-1 group-hover/submenu:opacity-100 group-hover/submenu:visible group-hover/submenu:translate-x-0 transition-all duration-200">
+                                                                {subItem.dropdown.map((nestedItem) => (
+                                                                        <a
+                                                                                href={nestedItem.href}
+                                                                                class={`block px-4 py-2 whitespace-nowrap transition-colors ${
+                                                                                    isActive(nestedItem.href)
+                                                                                        ? 'text-blue-600 font-bold'
+                                                                                        : 'text-gray-700 hover:bg-gray-100'
+                                                                                }`}
+                                                                        >
+                                                                            {nestedItem.title}
+                                                                        </a>
+                                                                ))}
+                                                            </div>
+                                                    )}
+                                                </div>
+                                        ))}
                                     </div>
                             )}
                         </div>
@@ -135,16 +193,52 @@ This is an amalgamation of inspiration from multiple sources, ai-assisted code, 
                                 <div class="mobile-dropdown bg-gray-50 pl-4 overflow-hidden transition-all duration-300 ease-out"
                                      style="max-height: 0;">
                                     {item.dropdown.map((subItem) => (
-                                            <a
-                                                    href={subItem.href}
-                                                    class={`block py-2 hover:text-gray-900 transition-colors ${
-                                                        isActive(subItem.href)
-                                                            ? 'text-blue-600 font-bold'
-                                                            : 'text-gray-700 hover:bg-gray-200'
-                                                    }`}
-                                            >
-                                                {subItem.title}
-                                            </a>
+                                            <div>
+                                                <div class="flex items-center justify-between">
+                                                    <a
+                                                            href={subItem.href}
+                                                            class={`flex-1 py-2 transition-colors ${
+                                                                isActive(subItem.href)
+                                                                    ? 'text-blue-600 font-bold'
+                                                                    : 'text-gray-700 hover:bg-gray-200'
+                                                            }`}
+                                                    >
+                                                        {subItem.title}
+                                                    </a>
+                                                    {subItem.dropdown && (
+                                                            <button
+                                                                    class="mobile-dropdown-btn p-2 text-gray-700 hover:bg-gray-200 transition-colors"
+                                                                    aria-label={`Toggle ${subItem.title} dropdown`}
+                                                            >
+                                                                <svg class="w-4 h-4 transition-transform duration-300"
+                                                                     fill="none"
+                                                                     stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                          stroke-width="2"
+                                                                          d="M19 9l-7 7-7-7"/>
+                                                                </svg>
+                                                            </button>
+                                                    )}
+                                                </div>
+
+                                                {subItem.dropdown && (
+                                                        <div class="mobile-dropdown bg-gray-100 pl-4 overflow-hidden transition-all duration-300 ease-out"
+                                                             style="max-height: 0;">
+                                                            {subItem.dropdown.map((nestedItem) => (
+                                                                    <a
+                                                                            href={nestedItem.href}
+                                                                            class={`block py-2 transition-colors ${
+                                                                                isActive(nestedItem.href)
+                                                                                    ? 'text-blue-600 font-bold'
+                                                                                    : 'text-gray-600 hover:bg-gray-200'
+                                                                            }`}
+                                                                    >
+                                                                        {nestedItem.title}
+                                                                    </a>
+                                                            ))}
+                                                        </div>
+                                                )}
+                                            </div>
                                     ))}
                                 </div>
                         )}
@@ -167,6 +261,24 @@ This is the main stuff that was ai-generated, overly code-commented for somewhat
     const mobileMenu = document.getElementById('mobile-menu');
     const mainHeader = document.getElementById('main-header');
 
+    // Recursively update parent dropdowns' max-height
+    function updateParentHeights(element: HTMLElement) {
+        let parent = element.parentElement;
+
+        // Walk up the tree and update any mobile-dropdown ancestors
+        while (parent && parent !== mobileMenu) {
+            if (parent.classList.contains('mobile-dropdown')) {
+                parent.style.maxHeight = parent.scrollHeight + 'px';
+            }
+            parent = parent.parentElement;
+        }
+
+        // Finally update the main menu
+        if (mobileMenu) {
+            mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+        }
+    }
+
     // Set the max height so the dropdown shows
     function openMobileMenu() {
         if (mobileMenu) {
@@ -178,7 +290,7 @@ This is the main stuff that was ai-generated, overly code-commented for somewhat
     function closeMobileMenu() {
         if (mobileMenu) {
             mobileMenu.style.maxHeight = '0';
-            // Also close all dropdowns
+            // Also close all dropdowns (including nested ones)
             const dropdowns = document.querySelectorAll('.mobile-dropdown');
             dropdowns.forEach(dropdown => {
                 (dropdown as HTMLElement).style.maxHeight = '0';
@@ -223,30 +335,48 @@ This is the main stuff that was ai-generated, overly code-commented for somewhat
             const dropdown = btn.parentElement?.nextElementSibling as HTMLElement;
             const icon = btn.querySelector('svg');
 
-            // if the dropdown actually exists, set its maxHeight so it can be seen
+            // if the dropdown actually exists, toggle its maxHeight
             if (dropdown) {
-                if (dropdown.style.maxHeight === '0px' || dropdown.style.maxHeight === '') {
+                const isCurrentlyOpen = dropdown.style.maxHeight !== '0px' && dropdown.style.maxHeight !== '';
+
+                if (!isCurrentlyOpen) {
+                    // Opening the dropdown
                     dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
                     icon?.classList.add('rotate-180');
-                } else {  // handle dropdowns that already have maxHeight
-                    dropdown.style.maxHeight = '0';
-                    icon?.classList.remove('rotate-180');
-                }
 
-                // Set the maxHeight to how large the scroll height is
-                // Use multiple timeouts to ensure smooth-ish expansion
-                // This is extremely scuffed but frankly trying to make navbars sucks
-                // the woes of hating js, loving python, and not truly understanding CSS
-                if (mobileMenu) {
+                    // Update all parent heights after a brief delay to account for animation
                     setTimeout(() => {
-                        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                        updateParentHeights(dropdown);
                     }, 50);
                     setTimeout(() => {
-                        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                        updateParentHeights(dropdown);
                     }, 150);
                     setTimeout(() => {
-                        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-                    }, 310); // After dropdown animation completes
+                        updateParentHeights(dropdown);
+                    }, 310);
+                } else {
+                    // Closing the dropdown
+                    // First close all nested dropdowns inside this one
+                    const nestedDropdowns = dropdown.querySelectorAll('.mobile-dropdown');
+                    nestedDropdowns.forEach(nested => {
+                        (nested as HTMLElement).style.maxHeight = '0';
+                        const nestedIcon = nested.previousElementSibling?.querySelector('.mobile-dropdown-btn svg');
+                        nestedIcon?.classList.remove('rotate-180');
+                    });
+
+                    dropdown.style.maxHeight = '0';
+                    icon?.classList.remove('rotate-180');
+
+                    // Update parent heights after closing
+                    setTimeout(() => {
+                        updateParentHeights(dropdown);
+                    }, 50);
+                    setTimeout(() => {
+                        updateParentHeights(dropdown);
+                    }, 150);
+                    setTimeout(() => {
+                        updateParentHeights(dropdown);
+                    }, 310);
                 }
             }
 
