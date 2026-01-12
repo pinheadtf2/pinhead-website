@@ -41,11 +41,6 @@ function isActive(href: string) {
     }
     return currentPath.startsWith(href);
 }
-
-// Recursive component for rendering nav items
-function renderNavItem(item: any, depth: number = 0) {
-    return item;
-}
 ---
 <!--
 To the poor soul inspecting this file expecting good code: turn back.
@@ -255,6 +250,7 @@ This is the main stuff that was ai-generated, overly code-commented for somewhat
     // Animation state tracking
     let isAnimating = false;
     const ANIMATION_DURATION = 300; // Match CSS transition duration
+    const ANIMATION_INTERVAL = 10;
 
     // Mobile menu toggles
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -345,15 +341,11 @@ This is the main stuff that was ai-generated, overly code-commented for somewhat
                     icon?.classList.add('rotate-180');
 
                     // Update all parent heights after a brief delay to account for animation
-                    setTimeout(() => {
-                        updateParentHeights(dropdown);
-                    }, 50);
-                    setTimeout(() => {
-                        updateParentHeights(dropdown);
-                    }, 150);
-                    setTimeout(() => {
-                        updateParentHeights(dropdown);
-                    }, 310);
+                    for (let time = ANIMATION_INTERVAL; time <= ANIMATION_DURATION+10; time += ANIMATION_INTERVAL) {
+                        setTimeout(() => {
+                            updateParentHeights(dropdown);
+                        }, time);
+                    }
                 } else {
                     // Closing the dropdown
                     // First close all nested dropdowns inside this one
@@ -368,15 +360,11 @@ This is the main stuff that was ai-generated, overly code-commented for somewhat
                     icon?.classList.remove('rotate-180');
 
                     // Update parent heights after closing
-                    setTimeout(() => {
-                        updateParentHeights(dropdown);
-                    }, 50);
-                    setTimeout(() => {
-                        updateParentHeights(dropdown);
-                    }, 150);
-                    setTimeout(() => {
-                        updateParentHeights(dropdown);
-                    }, 310);
+                    for (let time = ANIMATION_INTERVAL; time <= ANIMATION_DURATION+10; time += ANIMATION_INTERVAL) {
+                        setTimeout(() => {
+                            updateParentHeights(dropdown);
+                        }, time);
+                    }
                 }
             }
 
