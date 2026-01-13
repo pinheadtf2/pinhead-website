@@ -1,385 +1,48 @@
 ---
 const navItems = [
     {
-        title: 'home',
+        display: 'home',
         href: '/'
     },
     {
-        title: 'about',
-        href: '/about',
-        dropdown: [
+        display: 'about',
+        href: '/about'
+    },
+    {
+        display: 'gaming',
+        href: '/gaming',
+        children: [
             {
-                title: 'music',
-                href: '/about/music'
-            },
-            {
-                title: 'gaming',
-                href: '/about/gaming',
-                dropdown: [
-                    {
-                        title: 'flood escape 2',
-                        href: '/about/gaming/fe2'
-                    },
-                ]
-            },
+                display: 'flood escape 2',
+                href: '/fe2',
+            }
         ]
     },
     {
-        title: 'contact',
+        display: 'contact',
         href: '/contact'
-    }
-];
-
-// Get current path for active state detection
-const currentPath = Astro.url.pathname;
-console.log(currentPath);
-
-// Helper function to check if a link is active
-function isActive(href: string) {
-    if (href === '/') {
-        return currentPath === '/';
-    }
-    return currentPath.startsWith(href);
-}
+    },
+]
 ---
-<!--
-To the poor soul inspecting this file expecting good code: turn back.
-This is an amalgamation of inspiration from multiple sources, ai-assisted code, and keyboard-forehead smashing.
--->
-<header id="main-header" class="bg-gray-100 shadow-md sticky top-0 z-20">
-    <div class="max-w-[92rem] mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
 
-            <!-- Desktop Navigation -->
-            <nav class="hidden md:flex items-center gap-6">
-                {navItems.map((item) => (
-                        <div class="relative group">
-                            <!-- Top-level link -->
-                            <a
-                                    href={item.href}
-                                    class={`transition-colors py-2 flex items-center gap-1 ${
-                                        isActive(item.href)
-                                            ? 'text-blue-600 font-bold'
-                                            : 'text-gray-900 hover:text-gray-600'
-                                    }`}
-                            >
-                                {item.title}
-                                {item.dropdown && (
-                                        <svg
-                                                class="w-4 h-4 transition-transform group-hover:rotate-180"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                        >
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                )}
-                            </a>
-
-                            <!-- First dropdown -->
-                            {item.dropdown && (
-                                    <div class="absolute left-0 top-full z-30 w-48 bg-white shadow-lg rounded-md opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200">
-                                        {item.dropdown.map((subItem) => (
-                                                <div class="relative group/submenu">
-                                                    <!-- Sub item -->
-                                                    <a
-                                                            href={subItem.href}
-                                                            class={`flex items-center justify-between px-4 py-2 whitespace-nowrap transition-colors ${
-                                                                isActive(subItem.href)
-                                                                    ? 'text-blue-600 font-bold'
-                                                                    : 'text-gray-700 hover:bg-gray-100'
-                                                            }`}
-                                                    >
-                                                        {subItem.title}
-                                                        {subItem.dropdown && (
-                                                                <svg
-                                                                        class="w-4 h-4 transition-transform group-hover/submenu:rotate-90"
-                                                                        fill="none"
-                                                                        stroke="currentColor"
-                                                                        viewBox="0 0 24 24"
-                                                                >
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                          stroke-width="2"
-                                                                          d="M9 5l7 7-7 7"/>
-                                                                </svg>
-                                                        )}
-                                                    </a>
-
-                                                    <!-- Second-level dropdown -->
-                                                    {subItem.dropdown && (
-                                                            <div class="absolute left-full top-0 z-40 w-48 bg-white shadow-lg rounded-md opacity-0 invisible -translate-x-1 group-hover/submenu:opacity-100 group-hover/submenu:visible group-hover/submenu:translate-x-0 transition-all duration-200">
-                                                                {subItem.dropdown.map((nestedItem) => (
-                                                                        <a
-                                                                                href={nestedItem.href}
-                                                                                class={`block px-4 py-2 whitespace-nowrap transition-colors ${
-                                                                                    isActive(nestedItem.href)
-                                                                                        ? 'text-blue-600 font-bold'
-                                                                                        : 'text-gray-700 hover:bg-gray-100'
-                                                                                }`}
-                                                                        >
-                                                                            {nestedItem.title}
-                                                                        </a>
-                                                                ))}
-                                                            </div>
-                                                    )}
-                                                </div>
-                                        ))}
-                                    </div>
-                            )}
-                        </div>
-                ))}
-            </nav>
-
-            <!--
-            Logo
-            Displays on the right side of the screen for Desktop users, left side for mobile users
-            -->
-            <a href="/" class="text-2xl font-bold text-gray-900">
-                pinhead's site
-            </a>
-
-            <!-- Mobile Menu Button -->
-            <button
-                    id="mobile-menu-btn"
-                    class="md:hidden p-2 text-gray-900 hover:bg-gray-200 rounded-md transition-colors"
-                    aria-label="Toggle menu"
-            >
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
+<div class="fixed top-0 left-0 w-full z-110 px-3 sm:px-4 md:px-6">
+    <header class="bg-slate-200 shadow-md max-w-6xl mx-auto rounded-2xl drop-shadow-[0_0_8px_rgba(37,99,235,0.5)] sm:rounded-2xl mt-3 sm:mt-4 md:mt-5 relative">
+        <div class="w-full mx-auto px-3 sm:px-4 lg:px-6">
+            <div class="flex justify-between items-center h-14 sm:h-16">
+                <!--Site Mascot-->
+                <div class="flex-shrink-0">
+                    <a href="/"
+                       class="relative font-bold text-xl sm:text-2xl transition-all duration-200 ease-out hover:scale-105 md:hover:scale-110 md:hover:text-[1.6rem] hover:text-[#2196f3] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-[#2196f3] after:transition-all after:duration-200 hover:after:w-full">pinhead's
+                        site</a>
+                </div>
+                <!--Desktop Navigation-->
+                <nav class="hidden md:flex space-x-4 lg:space-x-6">
+                    {navItems.map((item) => (
+                        <a href={item.href}
+                       class="relative font-bold transition-all duration-200 ease-out hover:scale-105 hover:text-[#2196f3] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-[#2196f3] after:transition-all after:duration-200 hover:after:w-full">{item.display}</a>
+                    ))}
+                </nav>
+            </div>
         </div>
-
-        <!-- Mobile Navigation -->
-        <nav
-                id="mobile-menu"
-                class="md:hidden overflow-hidden transition-all duration-300 ease-out"
-                style="max-height: 0;"
-        >
-            {navItems.map((item) => (
-                    <div class="border-t border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <a
-                                    href={item.href}
-                                    class={`flex-1 py-3 transition-colors ${
-                                        isActive(item.href)
-                                            ? 'text-blue-600 font-bold'
-                                            : 'text-gray-900 hover:bg-gray-200'
-                                    }`}
-                            >
-                                {item.title}
-                            </a>
-                            {item.dropdown && (
-                                    <button
-                                            class="mobile-dropdown-btn p-3 text-gray-900 hover:bg-gray-200 transition-colors"
-                                            aria-label={`Toggle ${item.title} dropdown`}
-                                    >
-                                        <svg class="w-5 h-5 transition-transform duration-300" fill="none"
-                                             stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </button>
-                            )}
-                        </div>
-
-                        {item.dropdown && (
-                                <div class="mobile-dropdown bg-gray-50 pl-4 overflow-hidden transition-all duration-300 ease-out"
-                                     style="max-height: 0;">
-                                    {item.dropdown.map((subItem) => (
-                                            <div>
-                                                <div class="flex items-center justify-between">
-                                                    <a
-                                                            href={subItem.href}
-                                                            class={`flex-1 py-2 transition-colors ${
-                                                                isActive(subItem.href)
-                                                                    ? 'text-blue-600 font-bold'
-                                                                    : 'text-gray-700 hover:bg-gray-200'
-                                                            }`}
-                                                    >
-                                                        {subItem.title}
-                                                    </a>
-                                                    {subItem.dropdown && (
-                                                            <button
-                                                                    class="mobile-dropdown-btn p-2 text-gray-700 hover:bg-gray-200 transition-colors"
-                                                                    aria-label={`Toggle ${subItem.title} dropdown`}
-                                                            >
-                                                                <svg class="w-4 h-4 transition-transform duration-300"
-                                                                     fill="none"
-                                                                     stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                          stroke-width="2"
-                                                                          d="M19 9l-7 7-7-7"/>
-                                                                </svg>
-                                                            </button>
-                                                    )}
-                                                </div>
-
-                                                {subItem.dropdown && (
-                                                        <div class="mobile-dropdown bg-gray-100 pl-4 overflow-hidden transition-all duration-300 ease-out"
-                                                             style="max-height: 0;">
-                                                            {subItem.dropdown.map((nestedItem) => (
-                                                                    <a
-                                                                            href={nestedItem.href}
-                                                                            class={`block py-2 transition-colors ${
-                                                                                isActive(nestedItem.href)
-                                                                                    ? 'text-blue-600 font-bold'
-                                                                                    : 'text-gray-600 hover:bg-gray-200'
-                                                                            }`}
-                                                                    >
-                                                                        {nestedItem.title}
-                                                                    </a>
-                                                            ))}
-                                                        </div>
-                                                )}
-                                            </div>
-                                    ))}
-                                </div>
-                        )}
-                    </div>
-            ))}
-        </nav>
-    </div>
-</header>
-
-<!--
-This is the main stuff that was ai-generated, overly code-commented for somewhat easier understanding.
--->
-<script>
-    // Animation state tracking
-    let isAnimating = false;
-    const ANIMATION_DURATION = 300; // Match CSS transition duration
-    const ANIMATION_INTERVAL = 10;
-
-    // Mobile menu toggles
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mainHeader = document.getElementById('main-header');
-
-    // Recursively update parent dropdowns' max-height
-    function updateParentHeights(element: HTMLElement) {
-        let parent = element.parentElement;
-
-        // Walk up the tree and update any mobile-dropdown ancestors
-        while (parent && parent !== mobileMenu) {
-            if (parent.classList.contains('mobile-dropdown')) {
-                parent.style.maxHeight = parent.scrollHeight + 'px';
-            }
-            parent = parent.parentElement;
-        }
-
-        // Finally update the main menu
-        if (mobileMenu) {
-            mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-        }
-    }
-
-    // Set the max height so the dropdown shows
-    function openMobileMenu() {
-        if (mobileMenu) {
-            mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-        }
-    }
-
-    // Hide the dropdown and all sub-dropdowns by setting no max height
-    function closeMobileMenu() {
-        if (mobileMenu) {
-            mobileMenu.style.maxHeight = '0';
-            // Also close all dropdowns (including nested ones)
-            const dropdowns = document.querySelectorAll('.mobile-dropdown');
-            dropdowns.forEach(dropdown => {
-                (dropdown as HTMLElement).style.maxHeight = '0';
-            });
-            const icons = document.querySelectorAll('.mobile-dropdown-btn svg');
-            icons.forEach(icon => {
-                icon.classList.remove('rotate-180');
-            });
-        }
-    }
-
-    // Handles starting animations, ignores any active ones to prevent bugs
-    mobileMenuBtn?.addEventListener('click', () => {
-        if (isAnimating) return;
-        isAnimating = true;
-
-        if (mobileMenu?.style.maxHeight === '0px' || mobileMenu?.style.maxHeight === '') {
-            openMobileMenu();
-        } else {
-            closeMobileMenu();
-        }
-
-        setTimeout(() => {
-            isAnimating = false;
-        }, ANIMATION_DURATION);
-    });
-
-    // Get all mobile dropdown toggles
-    const dropdownBtns = document.querySelectorAll('.mobile-dropdown-btn');
-
-    // Add an event listener to every dropdown button, which allows them to expand/contract
-    dropdownBtns.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-            if (isAnimating) return;
-
-            e.preventDefault();
-            e.stopPropagation(); // Prevent triggering outside click
-
-            isAnimating = true;
-
-            // Get the actual dropdown for its content, and the dropdown caret for rotating
-            const dropdown = btn.parentElement?.nextElementSibling as HTMLElement;
-            const icon = btn.querySelector('svg');
-
-            // if the dropdown actually exists, toggle its maxHeight
-            if (dropdown) {
-                const isCurrentlyOpen = dropdown.style.maxHeight !== '0px' && dropdown.style.maxHeight !== '';
-
-                if (!isCurrentlyOpen) {
-                    // Opening the dropdown
-                    dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
-                    icon?.classList.add('rotate-180');
-
-                    // Update all parent heights after a brief delay to account for animation
-                    for (let time = ANIMATION_INTERVAL; time <= ANIMATION_DURATION+10; time += ANIMATION_INTERVAL) {
-                        setTimeout(() => {
-                            updateParentHeights(dropdown);
-                        }, time);
-                    }
-                } else {
-                    // Closing the dropdown
-                    // First close all nested dropdowns inside this one
-                    const nestedDropdowns = dropdown.querySelectorAll('.mobile-dropdown');
-                    nestedDropdowns.forEach(nested => {
-                        (nested as HTMLElement).style.maxHeight = '0';
-                        const nestedIcon = nested.previousElementSibling?.querySelector('.mobile-dropdown-btn svg');
-                        nestedIcon?.classList.remove('rotate-180');
-                    });
-
-                    dropdown.style.maxHeight = '0';
-                    icon?.classList.remove('rotate-180');
-
-                    // Update parent heights after closing
-                    for (let time = ANIMATION_INTERVAL; time <= ANIMATION_DURATION+10; time += ANIMATION_INTERVAL) {
-                        setTimeout(() => {
-                            updateParentHeights(dropdown);
-                        }, time);
-                    }
-                }
-            }
-
-            // Animation is no longer running, so reset the flag
-            setTimeout(() => {
-                isAnimating = false;
-            }, ANIMATION_DURATION);
-        });
-    });
-
-    // Auto-close mobile menu when clicking on anything that isn't the dropdown
-    document.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (mainHeader && !mainHeader.contains(target)) {
-            closeMobileMenu();
-        }
-    });
-</script>
+    </header>
+</div>
