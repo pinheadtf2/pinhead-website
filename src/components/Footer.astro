@@ -8,14 +8,24 @@ function getCurrentCommitHash() {
         return execSync('git rev-parse --short HEAD').toString().trim();
     } catch (error) {
         console.error('Error getting commit hash:', error);
-        return "Commit Unavailable"; // Handle cases where git is not installed or repo is not found
+        return "commits N/A";
+    }
+}
+
+function getMostRecentTag() {
+    try {
+        return execSync('git describe --tags --abbrev=0').toString().trim();
+    } catch (error) {
+        console.error('Error getting most recent tag:', error);
+        return "tags N/A";
     }
 }
 
 const commitId = getCurrentCommitHash();
+const commitTag = getMostRecentTag();
 ---
 <footer class="fixed bottom-0 z-100 select-none rounded-tr-lg px-2 py-1 text-sm min-[1800px]:bg-transparent bg-gray-100">
     <span> © pinhead 2023-{currentYear}</span> &middot;
-    <a href="https://github.com/pinheadtf2/pinhead-website/tree/version-4">v4.0.0-alpha</a> &middot;
-    <a href="">{commitId}</a>
+    <a href="https://github.com/pinheadtf2/pinhead-website/tree/version-5">{commitTag}</a> &middot;
+    <a href=`https://github.com/pinheadtf2/pinhead-website/commit/${commitId}`>{commitId}</a>
 </footer>

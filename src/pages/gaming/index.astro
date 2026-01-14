@@ -1,0 +1,11 @@
+---
+import Base from "@/layouts/Base.astro";
+
+const currentPath = Astro.url.pathname;
+---
+
+<Base>
+    <h1>
+        {currentPath}
+    </h1>
+</Base>

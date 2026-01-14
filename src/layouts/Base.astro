@@ -1,9 +1,9 @@
 ---
 import '@fontsource-variable/lexend';
-import "../styles/global.css";
+import "@/styles/global.css";
 
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
 
 const pageTitle = "pinhead.dev";
 ---
@@ -24,7 +24,7 @@ const pageTitle = "pinhead.dev";
 	</head>
 	<body class="fixed z-[-1] size-full">
         <Header />
-		<main class="flex flex-col">
+		<main class="flex flex-col mt-3 sm:mt-4 md:mt-5 pt-14 sm:pt-16">  <!--This accounts for space occupied by header-->
 			<slot />
 		</main>
 		<Footer />
