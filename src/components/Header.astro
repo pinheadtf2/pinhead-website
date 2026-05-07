@@ -42,104 +42,115 @@ const hasActiveChild = (children: any[] | undefined) => {
     return children.some(child => isActive(child.href));
 };
 
-const navDesktopClasses = "relative font-bold transition-all duration-200 ease-out hover:scale-110 hover:text-[#2196f3] after:absolute after:-bottom-1 after:h-0.5 after:w-0 after:bg-[#2196f3] after:transition-all after:duration-200 hover:after:w-full"
-const navDesktopActive = "text-green-600 after:w-1/3 after:bg-green-600 hover:text-green-600"
+const getNavClasses = (active: boolean) => [
+    "relative font-bold transition-all duration-200 ease-out",
+    "hover:scale-110",
+    "after:absolute after:-bottom-1 after:h-0.5 after:transition-all after:duration-200",
+    "after:w-0 hover:after:w-full",
+    active
+        ? "text-ctp-green hover:text-ctp-green after:bg-ctp-green after:w-1/3"
+        : "hover:text-ctp-sapphire after:bg-ctp-sapphire",
+].join(" ");
 ---
-
-<div class="fixed top-0 left-0 w-full z-110 px-3 sm:px-4 md:px-6">
-    <header class="bg-slate-200 shadow-md max-w-6xl mx-auto rounded-2xl drop-shadow-[0_0_8px_rgba(37,99,235,0.5)] sm:rounded-2xl mt-3 sm:mt-4 md:mt-5 relative">
-        <div class="w-full mx-auto px-3 sm:px-4 lg:px-6">
-            <div class="flex justify-between items-center h-14 sm:h-16">
-                <!--Site Mascot-->
-                <div class="flex-shrink-0">
-                    <a href="/"
-                       class={`${navDesktopClasses} text-xl sm:text-2xl md:hover:text-[1.6rem] after:left-0`}>pinhead's
-                        site</a>
-                </div>
-                <!--Desktop Navigation-->
-                <nav class="hidden md:flex space-x-4">
-                    {navItems.map((item) => (
-                        item.children ? (
-                            <div class="relative group">
-                                <a href={item.href}
-                                   class={`${navDesktopClasses} inline-flex items-center gap-1 after:left-1/2 after:-translate-x-1/2 ${(isActive(item.href) || hasActiveChild(item.children)) ? navDesktopActive : ''}`}>
-                                    {item.display}
-                                    <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </a>
-                                <div class="absolute left-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                                    <div class="bg-slate-200 rounded-lg shadow-lg overflow-hidden border-2 border-slate-300">
-                                        {item.children.map((child) => (
+<header>
+    <div class="fixed z-102 flex h-16 w-full items-center gap-2 bg-ctp-surface0 px-4 drop-shadow-[0px_2px_2px_#000]">
+        <!--Site Mascot/Hero-->
+        <div class="shrink-0">
+            <a href="/"
+               class={`${getNavClasses(false)} text-xl sm:text-2xl md:hover:text-[1.6rem] after:left-0`}>pinhead's
+                site</a>
+        </div>
+        <!--Desktop Navigation-->
+        <nav class="hidden md:flex items-center gap-2 ml-auto">
+            {navItems.map((item) => (
+                item.children ? (
+                        <div class="relative group">
+                            <a href={item.href}
+                               class={`${getNavClasses(isActive(item.href) || hasActiveChild(item.children))} inline-flex items-center gap-1 after:left-1/2 after:-translate-x-1/2`}>
+                                {item.display}
+                                <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+                                     stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="absolute left-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                                <div class="bg-ctp-surface1 rounded-lg shadow-lg overflow-hidden border-2 border-ctp-surface2">
+                                    {item.children.map((child) => (
                                             <a href={child.href}
-                                               class={`block px-4 py-3 font-bold text-sm hover:bg-[#2196f3] hover:text-white transition-all duration-200 ease-out origin-left md:hover:scale-110 ${isActive(child.href) ? 'bg-green-600 text-white' : ''}`}>
+                                               class={`block px-4 py-3 font-bold text-sm hover:bg-ctp-sapphire hover:text-[#4c4f69] transition-all duration-200 ease-out origin-left md:hover:scale-110 ${isActive(child.href) ? 'bg-ctp-green text-[#4c4f69]' : ''}`}>
                                                 {child.display}
                                             </a>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <a href={item.href}
-                               class={`${navDesktopClasses} after:left-1/2 after:-translate-x-1/2 ${isActive(item.href) ? navDesktopActive : ''}`}>
-                                {item.display}
-                            </a>
-                        )
-                    ))}
-                </nav>
-                <!--Mobile Navigation-->
-                <button
-                    id="mobile-menu-button"
-                    class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-slate-300 transition-colors duration-200"
-                    aria-label="Toggle menu"
-                    aria-expanded="false">
-                    <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-200" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                    <svg id="close-icon" class="w-6 h-6 hidden transition-transform duration-200" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!--Mobile Menu Dropdown-->
-        <div
-            id="mobile-menu"
-            class="md:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
-            <nav class="px-3 pb-4 space-y-1">
-                {navItems.map((item) => (
-                    item.children ? (
-                        <div class="mobile-dropdown">
-                            <button
-                                class={`mobile-dropdown-button w-full flex items-center justify-between px-4 py-3 font-bold rounded-lg hover:bg-slate-300 transition-all duration-200 text-left ${(isActive(item.href) || hasActiveChild(item.children)) ? 'text-green-600' : ''}`}>
-                                <span>{item.display}</span>
-                                <svg class="mobile-dropdown-arrow w-4 h-4 transition-transform duration-200" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <div class="mobile-dropdown-content overflow-hidden transition-all duration-200 max-h-0">
-                                <div class="pl-4 pt-1 space-y-1">
-                                    {item.children.map((child) => (
-                                        <a href={child.href}
-                                           class={`block px-4 py-2 font-bold text-sm rounded-lg hover:bg-[#2196f3] hover:text-white transition-all duration-200 ${isActive(child.href) ? 'bg-green-600 text-white' : ''}`}>
-                                            {child.display}
-                                        </a>
                                     ))}
                                 </div>
                             </div>
                         </div>
-                    ) : (
+                ) : (
                         <a href={item.href}
-                           class={`block px-4 py-3 font-bold rounded-lg hover:bg-slate-300 transition-all duration-200 ${isActive(item.href) ? 'text-green-600' : ''}`}>
+                           class={`${getNavClasses(isActive(item.href))} after:left-1/2 after:-translate-x-1/2`}>
                             {item.display}
                         </a>
-                    )
-                ))}
-            </nav>
-        </div>
-    </header>
-</div>
+                )
+            ))}
+        </nav>
+        <!--Mobile Navigation-->
+        <button
+                id="mobile-menu-button"
+                class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-ctp-text transition-colors duration-200 ml-auto"
+                aria-label="Toggle menu"
+                aria-expanded="false">
+            <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-200" stroke="currentColor"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg id="close-icon" class="w-6 h-6 hidden transition-transform duration-200" stroke="currentColor"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+    <!--Mobile Menu-->
+    <div
+            id="mobile-menu"
+            class="fixed z-101 top-16 left-0 w-full bg-ctp-surface0 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out drop-shadow-[0px_4px_4px_#000]">
+        <nav class="flex flex-col px-4 py-2">
+            {navItems.map((item) => (
+                item.children ? (
+                        <div class="mobile-dropdown">
+                            <button class="mobile-dropdown-button w-full flex items-center justify-between py-3 font-bold border-b border-ctp-surface2 hover:text-ctp-sapphire transition-colors duration-200">
+                            <span class={isActive(item.href) || hasActiveChild(item.children) ? 'text-ctp-green' : ''}>
+                                {item.display}
+                            </span>
+                                <svg class="mobile-dropdown-arrow w-4 h-4 transition-transform duration-200"
+                                     stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div class="mobile-dropdown-content max-h-0 overflow-hidden transition-all duration-200 ease-in-out">
+                                {item.children.map((child) => (
+                                        <a
+                                                href={child.href}
+                                                class={`block pl-6 py-3 font-bold text-sm border-b border-ctp-surface2 hover:text-ctp-sapphire transition-colors duration-200 ${isActive(child.href) ? 'text-ctp-green' : ''}`}>
+                                            {child.display}
+                                        </a>
+                                ))}
+                            </div>
+                        </div>
+                ) : (
+                        <a
+                                href={item.href}
+                                class={`block py-3 font-bold border-b border-ctp-surface2 hover:text-ctp-sapphire transition-colors duration-200 ${isActive(item.href) ? 'text-ctp-green' : ''}`}>
+                            {item.display}
+                        </a>
+                )
+            ))}
+        </nav>
+    </div>
+    <!--Space Displacer-->
+    <div class="h-16 w-full"></div>
+</header>
 
 <script>
     // Mobile menu toggle
